@@ -66,6 +66,11 @@ console.assert(videoElement.muted);
 
 //console.assert(videoElement.loop);
 
+var oldPlay = videoElement.play;
+console.log(oldPlay);
+videoElement.play = function (){
+  return true;
+};
 
 var texture = PIXI.Texture.fromVideo(videoElement);
 
@@ -75,6 +80,29 @@ var texture = PIXI.Texture.fromVideo(videoElement);
 
 var videoSprite = new PIXI.Sprite(texture);
 
+
+
+videoElement.oncanplaythrough = function () {
+
+    console.log("VID LOADED");
+
+    var promise = oldPlay.call(videoElement);
+    console.log(promise);
+
+    if (promise !== undefined) {
+        promise.catch(error => {
+            var btn = document.createElement("BUTTON");
+            document.body.appendChild(btn);
+            btn.onclick = oldPlay.bind(videoElement);
+        }).then(() => {
+            // Auto-play started
+            console.log("autoplay success");
+        });
+    }
+
+    videoElement.oncanplaythrough = null;
+
+};
 
 
 

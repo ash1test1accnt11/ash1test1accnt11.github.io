@@ -91,9 +91,10 @@ videoElement.oncanplaythrough = function () {
 
     if (promise !== undefined) {
         promise.catch(error => {
-            var btn = document.createElement("BUTTON");
+            /*var btn = document.createElement("BUTTON");
             document.body.appendChild(btn);
-            btn.onclick = oldPlay.bind(videoElement);
+            btn.onclick = oldPlay.bind(videoElement);*/
+            oldPlay.call(videoElement);
         }).then(() => {
             // Auto-play started
             console.log("autoplay success");

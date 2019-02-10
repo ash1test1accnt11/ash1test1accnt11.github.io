@@ -1,18 +1,151 @@
-<!DOCTYPE html>
-<html lang="en">
-    <head>
-        <meta charset="UTF-8">
-        <meta name="viewport" content="width=device-width, maximum-scale=1, minimum-scale=1, initial-scale=1"/>
-        <title>Video test</title>
-        <script type="text/javascript" src="/static-assets/gs-game-core/gcore-loader.js"></script>
-        
-    </head>
-    <body style="margin:0">
-        <div id="gameContent"></div> 
-        <div id="app">
-           
-        </div>
+<!doctype html>
 
-        <script type="text/javascript" src="./bundle.js"></script>
-    </body>
-</html>
+<meta charset="utf-8">
+
+<body>
+
+<script src="../pixi/pixi.min.js"></script>
+
+<script>
+
+
+
+var options = {
+
+      preserveDrawingBuffer: false,
+
+      clearBeforeRender :false,
+
+      autoResize: true,
+
+      transparent: false
+
+};
+
+
+
+var renderer = new PIXI.WebGLRenderer(800, 600, options);
+
+document.body.appendChild(renderer.view);
+
+
+
+var stage = new PIXI.Container();
+
+
+
+var videoElement = document.createElement("video");
+
+
+
+videoElement.src = "vid25.mp4";
+
+videoElement.type ='video/mp4';
+
+
+
+videoElement.muted = true;
+
+videoElement.autoplay = true;
+
+videoElement.loop = true;
+
+
+
+
+
+/*videoElement.oncanplaythrough = function () {
+
+    console.log("VID LOADED");
+
+    videoElement.pause();
+
+    setTimeout(() => {
+
+        videoElement.play();
+
+    }, 1000);
+
+    videoElement.oncanplaythrough = null;
+
+};*/
+
+
+
+
+
+
+
+console.assert(videoElement.muted);
+
+console.assert(videoElement.autoplay);
+
+console.assert(videoElement.loop);
+
+
+
+
+
+
+
+
+
+var texture = PIXI.Texture.fromVideo(videoElement);
+
+
+
+
+
+
+
+var videoSprite = new PIXI.Sprite(texture);
+
+
+
+var fps = 60;
+
+
+
+if(fps !== 60) {
+
+    texture.baseTexture.autoUpdate = false;
+
+    setInterval(() => {
+
+        texture.update();
+
+    }, Math.floor(1000 / fps));
+
+}
+
+
+
+
+
+
+
+
+
+stage.addChild(videoSprite);
+
+
+
+animate();
+
+
+
+function animate(){
+
+    renderer.render(stage);
+
+
+
+    requestAnimationFrame(animate);
+
+}
+
+
+
+</script>
+
+</body>

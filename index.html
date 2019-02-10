@@ -43,32 +43,14 @@ videoElement.src = "vid25.mp4";
 videoElement.type ='video/mp4';
 
 
-
+videoElement.setAttribute("muted", true);
+videoElement.setAttribute("autoplay", true);
+videoElement.setAttribute("loop", true);
 videoElement.muted = true;
-
 videoElement.autoplay = true;
-
 videoElement.loop = true;
 
 
-
-
-
-/*videoElement.oncanplaythrough = function () {
-
-    console.log("VID LOADED");
-
-    videoElement.pause();
-
-    setTimeout(() => {
-
-        videoElement.play();
-
-    }, 1000);
-
-    videoElement.oncanplaythrough = null;
-
-};*/
 
 
 
@@ -78,17 +60,15 @@ videoElement.loop = true;
 
 console.assert(videoElement.muted);
 
-console.assert(videoElement.autoplay);
+//console.assert(videoElement.autoplay);
 
-console.assert(videoElement.loop);
+//console.assert(videoElement.loop);
 
-
-
-
-
-
-
-
+var oldPlay = videoElement.play;
+console.log(oldPlay);
+videoElement.play = function (){
+  return true;
+};
 
 var texture = PIXI.Texture.fromVideo(videoElement);
 
@@ -96,9 +76,37 @@ var texture = PIXI.Texture.fromVideo(videoElement);
 
 
 
-
-
 var videoSprite = new PIXI.Sprite(texture);
+
+
+
+videoElement.oncanplaythrough = function () {
+
+    console.log("VID LOADED");
+
+    var promise = oldPlay.call(videoElement);
+    console.log(promise);
+
+    if (promise !== undefined) {
+        promise.catch(error => {
+            var btn = document.createElement("BUTTON");
+            document.body.appendChild(btn);
+            btn.onclick = oldPlay.bind(videoElement);
+        }).then(() => {
+            // Auto-play started
+            console.log("autoplay success");
+        });
+    }
+
+    /*setTimeout(() => {
+
+        
+
+    }, 2000);*/
+
+    videoElement.oncanplaythrough = null;
+
+};
 
 
 
@@ -119,13 +127,6 @@ if(fps !== 60) {
 }
 
 
-
-
-
-
-
-
-
 stage.addChild(videoSprite);
 
 
@@ -143,6 +144,7 @@ function animate(){
     requestAnimationFrame(animate);
 
 }
+
 
 
 

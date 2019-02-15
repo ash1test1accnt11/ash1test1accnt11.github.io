@@ -30,7 +30,10 @@ var stage = new PIXI.Container();
 var videoElement = document.createElement("video");
 
 function failed(e) {
-    window.alert(e.target.error.code);
+      var text = new PIXI.Text(e.target.error.code, {fontFamily : 'Arial', fontSize: 30, fill : 0xff1010, align : 'center'});
+        text.x = 200;
+        text.y = 200;
+        stage.addChild(text);
 }
 
 videoElement.onerror = failed;
@@ -53,7 +56,10 @@ videoElement.loop = true;
 videoElement.playsinline = true;
 
 setInterval(function(){ 
-        window.alert(videoElement.readyState);
+        var text = new PIXI.Text(videoElement.readyState, {fontFamily : 'Arial', fontSize: 30, fill : 0xff1010, align : 'center'});
+        text.x = 100;
+        text.y = 100;
+        stage.addChild(text);
     }, 2000);
 
 

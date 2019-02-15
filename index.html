@@ -11,23 +11,16 @@
 
 
 var options = {
-
       preserveDrawingBuffer: false,
-
       clearBeforeRender :false,
-
       autoResize: true,
-
       transparent: false
-
 };
 
 
 
 var renderer = new PIXI.WebGLRenderer(800, 600, options);
-
 document.body.appendChild(renderer.view);
-
 
 
 var stage = new PIXI.Container();
@@ -36,12 +29,8 @@ var stage = new PIXI.Container();
 
 var videoElement = document.createElement("video");
 
-
-
 videoElement.src = "vid25.mp4";
-
 videoElement.type ='video/mp4';
-
 
 videoElement.setAttribute("muted", true);
 videoElement.setAttribute("autoplay", true);
@@ -56,24 +45,11 @@ videoElement.playsinline = true;
 
 
 
-
-
-
-
 console.assert(videoElement.muted);
 
-//console.assert(videoElement.autoplay);
 
-//console.assert(videoElement.loop);
-
-var oldPlay = videoElement.play;
-console.log(oldPlay);
-videoElement.play = function (){
-  return true;
-};
 
 var texture = PIXI.Texture.fromVideo(videoElement);
-
 
 
 
@@ -82,28 +58,6 @@ var videoSprite = new PIXI.Sprite(texture);
 
 
 
-videoElement.oncanplaythrough = function () {
-
-    console.log("VID LOADED");
-
-    var promise = oldPlay.call(videoElement);
-    console.log(promise);
-
-    if (promise !== undefined) {
-        promise.catch(error => {
-            /*var btn = document.createElement("BUTTON");
-            document.body.appendChild(btn);
-            btn.onclick = oldPlay.bind(videoElement);*/
-            oldPlay.call(videoElement);
-        }).then(() => {
-            // Auto-play started
-            console.log("autoplay success");
-        });
-    }
-
-    videoElement.oncanplaythrough = null;
-
-};
 
 
 

@@ -35,11 +35,15 @@ function failed(e) {
         text.y = 200;
         stage.addChild(text);
 }
+      
+window.alert(1);
 
 videoElement.onerror = failed;
 videoElement.onabort = failed;
 videoElement.onsuspend = failed;
 videoElement.onstalled = failed;
+      
+      window.alert(2);
 
 videoElement.preload = "none";
 
@@ -70,7 +74,7 @@ console.assert(videoElement.muted);
 
 var texture = PIXI.Texture.fromVideo(videoElement);
 
-
+window.alert(3);
 
 
 var videoSprite = new PIXI.Sprite(texture);

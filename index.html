@@ -29,6 +29,17 @@ var stage = new PIXI.Container();
 
 var videoElement = document.createElement("video");
 
+function failed(e) {
+    window.alert(e.target.error.code);
+}
+
+videoElement.onerror = failed;
+videoElement.onabort = failed;
+videoElement.onsuspend = failed;
+videoElement.onstalled = failed;
+
+videoElement.preload = "none";
+
 videoElement.src = "vid25.mp4";
 videoElement.type ='video/mp4';
 

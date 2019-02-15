@@ -36,15 +36,14 @@ function failed(e) {
         stage.addChild(text);
 }
       
-window.alert(1);
+
 
 videoElement.onerror = failed;
 videoElement.onabort = failed;
 videoElement.onsuspend = failed;
 videoElement.onstalled = failed;
       
-      window.alert(2);
-
+      
 videoElement.preload = "none";
 
 videoElement.src = "vid25.mp4";
@@ -54,6 +53,8 @@ videoElement.setAttribute("muted", true);
 videoElement.setAttribute("autoplay", true);
 videoElement.setAttribute("loop", true);
 videoElement.setAttribute('playsinline', true);
+videoElement.setAttribute('controls', true);
+videoElement.controls = true;
 videoElement.muted = true;
 videoElement.autoplay = true;
 videoElement.loop = true;
@@ -74,7 +75,6 @@ console.assert(videoElement.muted);
 
 var texture = PIXI.Texture.fromVideo(videoElement);
 
-window.alert(3);
 
 
 var videoSprite = new PIXI.Sprite(texture);

@@ -1,12 +1,10 @@
 <!doctype html>
-
 <meta charset="utf-8">
-
 <body>
-
 <script src="pixi.min.js"></script>
-
 <script>
+
+try {
 
 
 var options = {
@@ -16,14 +14,12 @@ var options = {
       transparent: false
 };
 
-
-
 var renderer = new PIXI.autoDetectRenderer(800, 600, options);
+console.log('RENDERER: ', renderer);
 document.body.appendChild(renderer.view);
 
 
 var stage = new PIXI.Container();
-
 
 // overriden from pixi to add promise handling
 PIXI.VideoBaseTexture.prototype._onCanPlay = function _onCanPlay() {
@@ -71,10 +67,8 @@ PIXI.VideoBaseTexture.prototype._onCanPlay = function _onCanPlay() {
     }
 };
 
-
 var texture = PIXI.Texture.fromVideoUrl('vid25.mp4');
 var src = texture.baseTexture.source;
-
 
 setInterval(function(){
     console.log('ended: ', src.ended);
@@ -84,7 +78,6 @@ setInterval(function(){
     console.log('networkState: ', src.networkState);
 }, 3000);
 
-
 var videoSprite = new PIXI.Sprite(texture);
 videoSprite.width = 500;
 videoSprite.height = 300;
@@ -92,7 +85,13 @@ videoSprite.height = 300;
 
 stage.addChild(videoSprite);
 
-
+var fps = 60;
+if(fps !== 60) {
+    texture.baseTexture.autoUpdate = false;
+    setInterval(function () {
+        texture.update();
+    }, Math.floor(1000 / fps));
+}
 
 var id = setInterval(function() {
     if (src.paused && (src.readyState === 3 || src.readyState === 4)) {
@@ -100,32 +99,22 @@ var id = setInterval(function() {
         clearInterval(id);
         document.body.appendChild(src);
         // destroy pixi video here 
+        src.play();
     }
 }, 1000);
 
-
-
-
-
-
-
 animate();
 
-
-
 function animate(){
-
     renderer.render(stage);
-
-
-
     requestAnimationFrame(animate);
+}
 
+} catch (err) {
+  console.log({err});
 }
 
 
-
-
 </script>
-
 </body>
+

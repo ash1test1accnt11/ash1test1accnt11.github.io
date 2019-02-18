@@ -1,16 +1,102 @@
-<!DOCTYPE html>
-<html>
+<!doctype html>
+<meta charset="utf-8">
 <body>
 
-<p>Click the button to open a new browser window.</p>
-
-<button onclick="myFunction()">Try it</button>
-
+<script src="pixi.min.js"></script>
 <script>
-function myFunction() {
-  window.open("http://games.games-dev.gateway.ext.rgp.test-gs.com/static-assets/games/gamesys.games-web/js-slot-samba-samba/0.0.0-pixi-video-3-SNAPSHOT/resources/default/videos/vid25.mp4");
-}
-</script>
 
+
+
+try {
+var options = {
+      preserveDrawingBuffer: false,
+      clearBeforeRender :false,
+      autoResize: true,
+      transparent: false
+};
+var renderer = new PIXI.autoDetectRenderer(800, 600, options);
+console.log('RENDERER: ', renderer);
+document.body.appendChild(renderer.view);
+var stage = new PIXI.Container();
+// overriden from pixi to add promise handling
+PIXI.VideoBaseTexture.prototype._onCanPlay = function _onCanPlay() {
+    this.hasLoaded = true;
+    if (this.source) {
+        this.source.removeEventListener('canplay', this._onCanPlay);
+        this.source.removeEventListener('canplaythrough', this._onCanPlay);
+        this.width = this.source.videoWidth;
+        this.height = this.source.videoHeight;
+        // prevent multiple loaded dispatches..
+        if (!this.__loaded) {
+            this.__loaded = true;
+            this.emit('loaded', this);
+        }
+        if (this._isSourcePlaying()) {
+            this._onPlayStart();
+        } else if (this.autoPlay) {
+            // https://developer.apple.com/library/archive/releasenotes/General/WhatsNewInSafari/Articles/Safari_10_0.html
+            var src = this.source;
+            src.setAttribute("muted", '');
+            src.setAttribute("loop", '');
+            src.muted = true;
+            src.playsinline = true;
+            src.loop = true;
+            console.log("CALLING PLAY");
+            var promise = src.play();
+            // old browsers dont return promises 
+            if (promise !== undefined) {
+                promise.catch(function (error) {
+                    console.log("PROMISE REJECTED: ", error);
+                    src.play(); // this still wont work in desktop safari if 'never auto-play' is set
+                });
+            } else {
+                console.log("PROMISE WAS UNDEFINED");
+                var that = this;
+                document.body.addEventListener('click', function(){
+                  that.src.play();
+                });
+            }
+        }
+    }
+};
+var texture = PIXI.Texture.fromVideoUrl('vid25.mp4');
+var src = texture.baseTexture.source;
+setInterval(function(){
+    console.log('ended: ', src.ended);
+    console.log('paused: ', src.paused);
+    console.log('currentTime: ', src.currentTime);
+    console.log('readyState: ', src.readyState);
+    console.log('networkState: ', src.networkState);
+}, 3000);
+var videoSprite = new PIXI.Sprite(texture);
+videoSprite.width = 500;
+videoSprite.height = 300;
+stage.addChild(videoSprite);
+var fps = 60;
+if(fps !== 60) {
+    texture.baseTexture.autoUpdate = false;
+    setInterval(function () {
+        texture.update();
+    }, Math.floor(1000 / fps));
+}
+/*var id = setInterval(function() {
+    if (src.paused && (src.readyState === 3 || src.readyState === 4)) {
+        console.log("FALLBACK");
+        clearInterval(id);
+        document.body.appendChild(src);
+        // destroy pixi video here 
+        src.play();
+    }
+}, 1000);*/
+
+animate();
+function animate(){
+    renderer.render(stage);
+    requestAnimationFrame(animate);
+}
+} catch (err) {
+  console.log({err});
+}
+
+</script>
 </body>
-</html>

@@ -43,7 +43,6 @@ PIXI.VideoBaseTexture.prototype._onCanPlay = function _onCanPlay() {
             src.loop = true;
             console.log("CALLING PLAY");
             var promise = src.play();
-            // old browsers dont return promises 
             if (promise !== undefined) {
                 promise.catch(function (error) {
                     console.log("PROMISE REJECTED: ", error);
@@ -53,6 +52,7 @@ PIXI.VideoBaseTexture.prototype._onCanPlay = function _onCanPlay() {
                 console.log("PROMISE WAS UNDEFINED");
                 console.log("PROMISE: ", promise);
                 window.addEventListener('touchstart', function() {
+                  // remove listner here 
                    console.log("BODY CLICKED");
                   src.play();
               });
@@ -74,7 +74,7 @@ var videoSprite = new PIXI.Sprite(texture);
 videoSprite.width = 500;
 videoSprite.height = 300;
 stage.addChild(videoSprite);
-var fps = 60;
+var fps = 25;
 if(fps !== 60) {
     texture.baseTexture.autoUpdate = false;
     setInterval(function () {

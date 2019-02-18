@@ -53,11 +53,12 @@ PIXI.VideoBaseTexture.prototype._onCanPlay = function _onCanPlay() {
                 console.log("PROMISE WAS UNDEFINED");
                 console.log("PROMISE: ", promise);
                 var that = this;
-                document.body.addEventListener('click', function(){
-                  console.log("BODY CLICKED");
+                window.addEventListener('touchstart', function() {
+                   console.log("BODY CLICKED");
                   console.log(that.src);
                   that.src.play();
-                });
+              });
+
             }
         }
     }

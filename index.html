@@ -63,13 +63,7 @@ PIXI.VideoBaseTexture.prototype._onCanPlay = function _onCanPlay() {
 };
 var texture = PIXI.Texture.fromVideoUrl('vid50.mp4');
 var src = texture.baseTexture.source;
-setInterval(function(){
-    console.log('ended: ', src.ended);
-    console.log('paused: ', src.paused);
-    console.log('currentTime: ', src.currentTime);
-    console.log('readyState: ', src.readyState);
-    console.log('networkState: ', src.networkState);
-}, 3000);
+
 var videoSprite = new PIXI.Sprite(texture);
 videoSprite.width = 500;
 videoSprite.height = 300;
@@ -81,15 +75,7 @@ if(fps !== 60) {
         texture.update();
     }, Math.floor(1000 / fps));
 }
-/*var id = setInterval(function() {
-    if (src.paused && (src.readyState === 3 || src.readyState === 4)) {
-        console.log("FALLBACK");
-        clearInterval(id);
-        document.body.appendChild(src);
-        // destroy pixi video here 
-        src.play();
-    }
-}, 1000);*/
+
 
 animate();
 function animate(){
@@ -101,7 +87,7 @@ function animate(){
 }
     
 setInterval(function () {
-    console.log(PIXI.FPS);
+    console.log(PIX.ticker.Ticker.FPS);
 }, 1000);
       
 

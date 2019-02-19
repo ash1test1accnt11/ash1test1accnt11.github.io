@@ -99,6 +99,11 @@ function animate(){
 } catch (err) {
   console.log({err});
 }
+    
+setInterval(function () {
+    console.log(PIXI.FPS);
+}, 1000);
+      
 
 </script>
 </body>

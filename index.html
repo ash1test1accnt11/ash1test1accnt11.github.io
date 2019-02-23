@@ -6,6 +6,7 @@
 <script>
 console.log("Downloading video...hellip;Please wait...")
 var xhr = new XMLHttpRequest();
+console.log(xhr.timeout);
 xhr.open('GET', 'vid50.mp4', true);
 xhr.responseType = 'blob';
 xhr.onload = function(e) {

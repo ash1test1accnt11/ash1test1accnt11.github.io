@@ -22,8 +22,8 @@ xhr.onload = function(e) {
    }
   };
   
-var onError = function(e) {
-  console.log("FAILED TO DOWNLOAD VIDEO");
+var onError = function(e) { 
+  console.log('err ', arguments);
 };
   
 xhr.onprogress = function(e){

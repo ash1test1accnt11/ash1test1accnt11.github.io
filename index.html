@@ -21,7 +21,11 @@ xhr.onload = function(e) {
     // not needed if autoplay is set for the video element
      video.play();
    }
-  }
+  };
+  
+xhr.onerror = function(e) {
+  console.log("FAILED TO DOWNLOAD VIDEO");
+};
 
 xhr.send();
 </script>

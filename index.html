@@ -23,9 +23,12 @@ xhr.onload = function(e) {
    }
   };
   
-xhr.onerror = function(e) {
+var onError = function(e) {
   console.log("FAILED TO DOWNLOAD VIDEO");
 };
+  
+xhr.onerror = onError;
+xhr.onabort = onError;
 
 xhr.send();
 </script>

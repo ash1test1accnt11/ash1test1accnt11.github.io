@@ -1,10 +1,9 @@
 <html>
 <head>
-<title>Preload video via AJAX</title>
 </head>
 <body>
 <script>
-console.log("Downloading video...hellip;Please wait...")
+  
 var xhr = new XMLHttpRequest();
 console.log(xhr.timeout);
 xhr.open('GET', 'vid50.mp4', true);
@@ -19,7 +18,7 @@ xhr.onload = function(e) {
     console.log("Loading video into element");
     video.src = vid;
     // not needed if autoplay is set for the video element
-     video.play();
+     //video.play();
    }
   };
   

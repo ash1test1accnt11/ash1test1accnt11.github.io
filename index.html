@@ -1,98 +1,31 @@
-<!doctype html>
+<html>
 <head>
-    <meta charset="utf-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
-    <meta name="apple-mobile-web-app-capable" content="yes">
-    <meta name="mobile-web-app-capable" content="yes">
-    <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no, minimal-ui">
+<title>Preload video via AJAX</title>
 </head>
 <body>
-<div id="div">
-</div>
-<div id="vid">
-</div>
-<script src="pixi.min.js"></script>
-
-<link rel="preload" as="video" href="https://ash1test1accnt11.github.io/vid25.mp4">
-
-<video id="video" controls></video>
-
 <script>
-  // Later on, after some condition has been met, set video source to the
-  // preloaded video URL.
-  video.src = 'https://ash1test1accnt11.github.io/vid25.mp4';
-  video.play().then(_ => {
-    // If preloaded video URL was already cached, playback started immediately.
-  });
+console.log("Downloading video...hellip;Please wait...")
+var xhr = new XMLHttpRequest();
+xhr.open('GET', 'vid25.mp4', true);
+xhr.responseType = 'blob';
+xhr.onload = function(e) {
+  if (this.status == 200) {
+    console.log("got it");
+    var myBlob = this.response;
+    var vid = (window.webkitURL || window.URL).createObjectURL(myBlob);
+    // myBlob is now the blob that the object URL pointed to.
+    var video = document.getElementById("video");
+    console.log("Loading video into element");
+    video.src = vid;
+    // not needed if autoplay is set for the video element
+    // video.play()
+   }
+  }
+
+xhr.send();
 </script>
 
-/*
+<video id="video" controls autoplay></video>
 
-var videoElement = document.createElement("video");
-videoElement.src = 'intro480p.mp4';
-
-videoElement.setAttribute('muted', '');
-videoElement.setAttribute('playsinline', '');
-videoElement.setAttribute('webkit-playsinline', '');
-videoElement.muted = true;
-videoElement.autoplay = false;
-videoElement.type ='video/mp4';
-
-
-videoElement.style.width = "300px";
-videoElement.style.height = "200px";
-
-videoElement.style.visibility = "hidden";
-videoElement.style.opacity = "0.0";
-
-document.getElementById("vid").appendChild(videoElement);   
-
-
-
-var that = this; 
-var onCanPlayThrough = function () {
-    videoElement.removeEventListener('canplaythrough', onCanPlayThrough);
-    document.getElementById("div").innerHTML += 'VID LOADED';
-
-
-    var resetVid = function () {
-        videoElement.pause(); 
-        videoElement.currentTime = 0;
-
-        setTimeout(function(){
-            videoElement.style.visibility = "visible";
-            videoElement.style.opacity = "1.0";
-            videoElement.play();
-        }, 2000);
-    };
-
-    var promise = videoElement.play();
-    if (promise !== undefined) {
-        promise.catch(function (error) {
-            videoElement.play();
-        }).then(function () {
-            resetVid();
-        });
-    } else {
-        var onTouch = function() {
-            document.body.removeEventListener('touchstart', onTouch);
-            document.getElementById("div").innerHTML += 'TOUCH';
-
-
-            videoElement.play();
-            resetVid();
-        };
-        document.body.addEventListener('touchstart', onTouch);
-    }
-};
-
-videoElement.addEventListener('canplaythrough', onCanPlayThrough);
-
-videoElement.load();
-
-
-*/
-    
-
-      
 </body>
+</html>

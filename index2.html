@@ -1,0 +1,51 @@
+<html>
+<head>
+</head>
+<body>
+<div id = "debug"></div>
+<div id = "vid"></div>
+<script>
+
+var video = document.createElement("video");
+video.src = "vid50.mp4";
+video.setAttribute('playsinline', '');
+video.setAttribute('webkit-playsinline', '');
+video.setAttribute('muted', '');
+video.setAttribute('controls', '');
+video.type ='video/mp4';
+video.style.width = "300px";
+video.style.height = "200px";
+video.style.visibility = "hidden";
+document.getElementById("vid").appendChild(video);
+
+window.addEventListener('click', function() {
+    this.removeEventListener('click', arguments.callee, false);
+    
+    video.addEventListener('ended', function () {
+        this.removeEventListener('ended', arguments.callee, false);
+        
+        video.currentTime = 0.1;
+        
+        document.getElementById("debug").innerHTML = "VIDEO LOADED";
+        console.log("readystate: ", video.readyState);
+        
+        video.style.visibility = "visible";
+        
+    }, false);
+    
+    video.play();
+    
+}, false);
+
+document.getElementById("debug").innerHTML = "TOUCH SCREEN TO LOAD VIDEO";
+
+
+
+
+
+
+</script>
+
+
+</body>
+</html>

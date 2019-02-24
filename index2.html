@@ -18,7 +18,7 @@ video.style.visibility = "hidden";
 document.getElementById("vid").appendChild(video);
     
 var onTimeUpdate = function () {
-    console.log(video.currentTime);
+    document.getElementById("debug").innerHTML = "LOADING VIDEO: " + video.currentTime; 
 };
     
 video.addEventListener('ended', function () {
@@ -34,7 +34,6 @@ video.addEventListener('timeupdate', onTimeUpdate, false);
 
 window.addEventListener('click', function() {
     this.removeEventListener('click', arguments.callee, false);
-    document.getElementById("debug").innerHTML = "LOADING VIDEO";    
     video.play();
 }, false);
 

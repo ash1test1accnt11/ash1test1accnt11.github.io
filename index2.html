@@ -16,17 +16,25 @@ video.style.width = "300px";
 video.style.height = "200px";
 video.style.visibility = "hidden";
 document.getElementById("vid").appendChild(video);
+    
+var onTimeUpdate = function () {
+    console.log(video.currentTime);
+};
+    
+video.addEventListener('ended', function () {
+    video.removeEventListener('timeupdate', onTimeUpdate);  
+    this.removeEventListener('ended', arguments.callee, false);     
+    video.currentTime = 0.1;   
+    document.getElementById("debug").innerHTML = "VIDEO LOADED";
+    console.log("readystate: ", video.readyState);  
+    video.style.visibility = "visible";  
+}, false);
+    
+video.addEventListener('timeupdate', onTimeUpdate, false);
 
 window.addEventListener('click', function() {
     this.removeEventListener('click', arguments.callee, false);
     document.getElementById("debug").innerHTML = "LOADING VIDEO";    
-    video.addEventListener('ended', function () {
-        this.removeEventListener('ended', arguments.callee, false);     
-        video.currentTime = 0.1;   
-        document.getElementById("debug").innerHTML = "VIDEO LOADED";
-        console.log("readystate: ", video.readyState);  
-        video.style.visibility = "visible";  
-    }, false);
     video.play();
 }, false);
 

@@ -7,7 +7,7 @@
 <script>
 var i = 0;
 var video = document.createElement("video");
-vid.onprogress = function() {
+video.onprogress = function() {
     document.getElementById("debug").innerHTML = "LOADING VIDEO " + (i++);
 };
 video.src = "vid50.mp4";

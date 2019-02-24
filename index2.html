@@ -32,8 +32,8 @@ video.addEventListener('ended', function () {
     
 video.addEventListener('timeupdate', onTimeUpdate, false);
 
-window.addEventListener('click', function() {
-    this.removeEventListener('click', arguments.callee, false);
+window.addEventListener('ontouchstart', function() {
+    this.removeEventListener('ontouchstart', arguments.callee, false);
     video.play();
 }, false);
 

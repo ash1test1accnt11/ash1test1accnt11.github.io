@@ -34,6 +34,7 @@ video.addEventListener('timeupdate', onTimeUpdate, false);
 
 window.addEventListener('touchstart', function() {
     this.removeEventListener('touchstart', arguments.callee, false);
+    document.getElementById("debug").innerHTML = "SCREEN TOUCHED";
     video.play();
 }, false);
 

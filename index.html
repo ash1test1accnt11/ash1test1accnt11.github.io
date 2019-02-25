@@ -2,6 +2,8 @@
 <head>
 </head>
 <body>
+    <video style="width:300px;height:200px;visibility:hidden;" id="video" controls muted playsinline></video>
+  <div id = "debug"></div>
 <script>
     document.getElementById("debug").innerHTML = "LOADING..."; 
 
@@ -52,8 +54,7 @@ xhr.onabort = onError;
 xhr.send();
 </script>
 
-<video style="width:300px;height:200px;visibility:hidden;" id="video" controls muted playsinline></video>
-  <div id = "debug"></div>
+
 
 </body>
 </html>

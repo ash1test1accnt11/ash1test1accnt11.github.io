@@ -1,0 +1,116 @@
+<!doctype html>
+<head>
+
+</head>
+<body>
+<div id="loading" style="position:absolute; left:500px; top:50px;background-color:lightblue;"></div> 
+<div id="debug" style="position:absolute; left:500px; top:100px;background-color:lightblue;"></div>  
+
+
+<video id="vid" type="video/mp4" muted webkit-playsinline playsinline controls style = "width:300px;height:200px;">
+</video>
+<script>
+
+
+
+
+var vid = document.getElementById("vid");
+vid.onerror = function () {
+  console.log ("video error: ", vid.error);
+};
+
+var vidData = null;
+
+get(function () {
+    log("video loaded");
+    if (this.status === 200) {
+        log("status = 200");
+        if (this.getResponseHeader("connection") === null) {
+            log("CACHE HIT");
+        }  else {
+            log("CACHE MISS");
+        }
+        checkNowCached();
+  
+
+        var blobURL = (window.webkitURL || window.URL).createObjectURL(this.response);
+        vid.src = blobURL;
+        vid.play();
+
+    } else {
+        log("status not 200");
+    }
+});
+
+
+function checkNowCached() {
+    get(function () {
+        if (this.status === 200 || this.status === 206) {
+            if (this.getResponseHeader("connection") === null) {
+                log("downloaded video was cached");
+            } else {
+                log("downloaded video NOT cached");
+            }
+
+        } else {
+            log("status not 200!!!!");
+        }
+    }, true);
+}
+
+function get(onLoad, range) {
+
+    var xhr = new XMLHttpRequest();
+
+
+
+    xhr.open("GET", "vid25.mp4", true);
+
+    if (range) {
+        xhr.setRequestHeader('Range', 'bytes=0-100');
+    } 
+
+    //xhr.setRequestHeader('cache-control', 'max-age=3600');
+
+    xhr.responseType = "blob";
+
+    xhr.onload = onLoad;
+
+    xhr.onprogress = function(e) {
+        if(e.lengthComputable) {
+            var percentComplete = ((e.loaded/e.total)*100|0) + '%';
+            document.getElementById("loading").innerHTML = "LOADING VIDEO: " + percentComplete; 
+            console.log('progress: ', percentComplete);
+        }
+    };
+
+    xhr.onerror = function(e) { 
+        log(xhr.error);
+    };
+
+    xhr.send();
+}
+
+
+ /*        
+     var fileReader = new FileReader();
+
+fileReader.onload = function (evt) {
+            log("video src set");
+            var result = evt.target.result;
+            vid.setAttribute("src", result);
+
+        };
+        fileReader.readAsDataURL(xhr.response);*/
+
+
+
+function log(msg) {
+  console.log(msg);
+  document.getElementById("debug").innerHTML += msg+"<br>" ;
+}
+
+
+      
+</script>
+</body>

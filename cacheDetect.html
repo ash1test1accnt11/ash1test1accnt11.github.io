@@ -25,14 +25,13 @@ get(function () {
     log("video loaded");
     if (this.status === 200) {
         log("status = 200");
-        if (this.getResponseHeader("connection") === null) {
+        if (cacheHit(this)) {
             log("CACHE HIT");
         }  else {
             log("CACHE MISS");
         }
         checkNowCached();
   
-
         var blobURL = (window.webkitURL || window.URL).createObjectURL(this.response);
         vid.src = blobURL;
         vid.play();
@@ -42,16 +41,19 @@ get(function () {
     }
 });
 
+function cacheHit(xhr) {
+    return xhr.getResponseHeader("Connection") === null && xhr.getResponseHeader("Proxy-Connection") === null;
+}
+
 
 function checkNowCached() {
     get(function () {
         if (this.status === 200 || this.status === 206) {
-            if (this.getResponseHeader("connection") === null) {
+            if (cacheHit(this)) {
                 log("downloaded video was cached");
             } else {
                 log("downloaded video NOT cached");
             }
-
         } else {
             log("status not 200!!!!");
         }
